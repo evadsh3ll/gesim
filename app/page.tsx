@@ -229,7 +229,7 @@ export default function GesimLanding() {
             containerClassName="text-center"
             textClassName="text-white font-light tracking-wide"
           >
-            Born out of frustration with traditional SIM hassles, GeSIM delivers a seamless eSIM experience — crypto-native, affordable, and on-the-go. Global mobile data as borderless as the internet.
+           Accessing mobile data while traveling is still a hassle—users face high roaming fees, unreliable local SIMs, or clunky setup processes. GeSIM solves this by offering a seamless, privacy-friendly eSIM powered by crypto. It lets users buy data plans in over 180 countries, pay with crypto or fiat, and get billed automatically based on how much data they use—no KYC required, no surprises, and no borders.
           </ScrollReveal>
         </div>
       </section>
