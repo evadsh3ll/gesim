@@ -5,12 +5,11 @@ import type React from "react"
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Button } from "@/components/ui/button"
 import HeroSection from "@/components/hero-section"
 import ScrollingSections from "@/components/scrolling-sections"
 import BackersSection from "@/components/backers-section"
 import Footer from "@/components/footer"
-import ScrollReveal from "@/components/ui/ScrollReveal/ScrollReveal"
+import { GesimBentoGrid } from "@/components/gesim-bento-grid"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -215,24 +214,8 @@ export default function GesimLanding() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Full Blank Page */}
-      {/* <section className="h-screen bg-white"></section> */}
-
-      {/* ScrollReveal Section */}
-      <section className="h-screen bg-black flex items-center justify-center">
-        <div className="container mx-auto px-8">
-          <ScrollReveal
-            baseOpacity={0.6}
-            enableBlur={true}
-            baseRotation={10}
-            blurStrength={10}
-            containerClassName="text-center"
-            textClassName="text-white font-light tracking-wide"
-          >
-           Accessing mobile data while traveling is still a hassle—users face high roaming fees, unreliable local SIMs, or clunky setup processes. GeSIM solves this by offering a seamless, privacy-friendly eSIM powered by crypto. It lets users buy data plans in over 180 countries, pay with crypto or fiat, and get billed automatically based on how much data they use—no KYC required, no surprises, and no borders.
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* Bento Grid Section - Replaces ScrollReveal */}
+      <GesimBentoGrid />
 
       {/* Sections with sticky phone */}
       <ScrollingSections />

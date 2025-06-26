@@ -10,9 +10,10 @@ interface FloatingCardProps {
   className?: string
   style?: React.CSSProperties
   animationDelay?: number
+  transitionConfig?: any // allow custom transition config
 }
 
-export function FloatingCard({ title, description, className, style, animationDelay = 0 }: FloatingCardProps) {
+export function FloatingCard({ title, description, className, style, animationDelay = 0, transitionConfig }: FloatingCardProps) {
   return (
     <motion.div
       initial={{
@@ -27,14 +28,18 @@ export function FloatingCard({ title, description, className, style, animationDe
         scale: 1,
         rotate: style?.transform ? Number.parseFloat(style.transform.split("rotate(")[1]) : 0,
       }}
-      transition={{
-        duration: 0.8,
-        delay: animationDelay,
-        ease: [0.25, 0.1, 0.25, 1],
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      }}
+      transition={
+        transitionConfig
+          ? { ...transitionConfig, delay: animationDelay }
+          : {
+              duration: 0.8,
+              delay: animationDelay,
+              ease: [0.25, 0.1, 0.25, 1],
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+            }
+      }
       whileHover={{
         scale: 1.05,
         y: -8,
