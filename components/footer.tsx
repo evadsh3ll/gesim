@@ -7,7 +7,7 @@ import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-b
 
 export default function Footer() {
   return (
-    <footer className="relative bg-black text-white mt-10 min-h-[400px] flex flex-col justify-end overflow-hidden">
+    <footer className="relative bg-black text-white  min-h-[400px] flex flex-col justify-end overflow-hidden">
       <div className="absolute inset-0 z-0 w-full h-full flex items-center justify-center">
         <Vortex className="w-full h-full" backgroundColor="black" />
       </div>

@@ -11,6 +11,7 @@ import BackersSection from "@/components/backers-section"
 import Footer from "@/components/footer"
 import { GesimBentoGrid, TrustedBy } from "@/components/gesim-bento-grid"
 import { FeaturesCarousel } from "@/components/features-carousel"
+import ImageTrail from "@/components/ImageTrail/ImageTrail"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -228,6 +229,28 @@ export default function GesimLanding() {
       {/* <BackersSection /> */}
 
       {/* Footer */}
+      <div style={{ height: '500px', position: 'relative', overflow: 'hidden', background: 'black' }}>
+        <ImageTrail
+          // key={key}
+          items={[
+            'https://picsum.photos/id/287/300/300',
+            'https://picsum.photos/id/1001/300/300',
+            'https://picsum.photos/id/1025/300/300',
+            'https://picsum.photos/id/1026/300/300',
+            'https://picsum.photos/id/1027/300/300',
+            'https://picsum.photos/id/1028/300/300',
+            'https://picsum.photos/id/1029/300/300',
+            'https://picsum.photos/id/1030/300/300',
+            // ...
+          ]}
+          variant={1}
+        />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full flex justify-center pointer-events-none">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-blue-500 to-emerald-400 bg-clip-text text-transparent drop-shadow-lg font-sans md:font-display text-center">
+            Connect in 180+ countries
+          </h2>
+        </div>
+      </div>
       <Footer />
     </div>
   )
