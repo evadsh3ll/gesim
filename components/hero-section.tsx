@@ -11,6 +11,7 @@ import Magnet from "./ui/Magnet/Magnet"
 import CountUp from "./CountUp"
 import { AnimatedTooltip } from "./ui/animated-tooltip";
 import {InteractiveHoverButton} from "./magicui/interactive-hover-button";
+import GlobeDemo from "./globe-component"
 const people = [
   {
     id: 1,
@@ -160,38 +161,29 @@ export default function HeroSection() {
       </header>
 
       <div className="container mx-auto px-8 pt-20 pb-16">
-        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
+        <div className="flex flex-col lg:flex-row gap-16 items-center min-h-[80vh]">
           {/* Left content - reduced spacing */}
-          <div ref={textRef} className="space-y-6 lg:pr-12">
+          <div ref={textRef} className="flex-1 space-y-6 lg:pr-12">
             <Badge className="inline-flex bg-blue-100 text-blue-700 hover:bg-blue-100 px-4 py-2 text-sm font-semibold">
               ✨ eSIM, Reinvented
             </Badge>
-
             <h1 className="text-6xl lg:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tight">
               Connect globally, pay{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600">
                 locally
               </span>
             </h1>
-
-            {/* <p className="text-2xl lg:text-3xl font-light text-slate-700 leading-relaxed max-w-2xl mb-6">
-              Travel globally, pay{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 font-semibold">
-                locally
-              </span>
-            </p> */}
-
             {/* User avatars section */}
             <div className="flex items-center gap-6 pt-6">
-            <div className="flex flex-row items-center justify-center">
-      <AnimatedTooltip items={people} />
-    </div>         
-         <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-lg border border-white/20">
+              <div className="flex flex-row items-center justify-center">
+                <AnimatedTooltip items={people} />
+              </div>
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-lg border border-white/20">
                 <div className="flex items-baseline gap-1">
                   <CountUp 
                     from={0}
                     to={60}
-                    separator=","
+                    separator="," 
                     direction="up"
                     duration={2}
                     className="text-3xl font-bold text-slate-900"
@@ -203,34 +195,15 @@ export default function HeroSection() {
                 </div>
               </div>
             </div>
-
-            {/* CTA Button */}
-            {/* <div className="pt-4"> */}
-
-              <Magnet padding={250} disabled={false} magnetStrength={10}>
-                {/* <Button className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"> */}
-                  {/* <Timer className="w-5 h-5 mr-3" /> */}
-            <InteractiveHoverButton>
-
-                  Join the waitlist now
-            </InteractiveHoverButton>
-                {/* </Button> */}
-              </Magnet>
-            {/* </div> */}
+            <Magnet padding={250} disabled={false} magnetStrength={10}>
+              <InteractiveHoverButton>
+                Join the waitlist now
+              </InteractiveHoverButton>
+            </Magnet>
           </div>
-
-          {/* Right phone mockup - exact positioning and tilt */}
-          <div className="relative flex justify-center lg:justify-end">
-            <div
-              ref={phoneRef}
-              className="relative"
-              style={{
-                transform: "perspective(1000px) rotateY(-15deg) rotateX(2deg)",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              <PhoneMockupHero />
-            </div>
+          {/* Right content - GlobeDemo */}
+          <div className="flex-1 flex justify-end items-center w-full">
+            <GlobeDemo />
           </div>
         </div>
       </div>
