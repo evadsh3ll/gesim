@@ -9,7 +9,7 @@ import HeroSection from "@/components/hero-section"
 import ScrollingSections from "@/components/scrolling-sections"
 import BackersSection from "@/components/backers-section"
 import Footer from "@/components/footer"
-import { GesimBentoGrid } from "@/components/gesim-bento-grid"
+import { GesimBentoGrid, TrustedBy } from "@/components/gesim-bento-grid"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -214,14 +214,17 @@ export default function GesimLanding() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* Trusted By Section */}
+      <TrustedBy />
+
       {/* Bento Grid Section - Replaces ScrollReveal */}
       <GesimBentoGrid />
 
       {/* Sections with sticky phone */}
-      <ScrollingSections />
+      {/* <ScrollingSections /> */}
 
       {/* Backers Section */}
-      <BackersSection />
+      {/* <BackersSection /> */}
 
       {/* Footer */}
       <Footer />

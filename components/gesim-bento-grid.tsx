@@ -16,14 +16,9 @@ export function GesimBentoGrid() {
         <div className="max-w-xs">
         <div className="max-w-lg flex-1 z-10">
                 <h2 className="text-left text-balance text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white mb-4">
-                  Redefining Mobile Data Access Worldwide
-                </h2>
-                <p className="mt-4 text-left text-lg text-white/90 leading-relaxed">
-                  No more roaming shock. No KYC friction. No nonsense.
-                </p>
-                <p className="mt-2 text-left text-base text-white/80">
-                  Smart. Secure. Seamless. Global mobile data with GeSIM
-                </p>
+
+                No more roaming shock. No KYC friction. No nonsense.                </h2>
+             
               </div>
 
               {/* 🔥 Image peeking from bottom-right, 60% visible, with blurred border effect */}
@@ -59,11 +54,9 @@ export function GesimBentoGrid() {
           <WobbleCard containerClassName="col-span-1 min-h-[400px] bg-pink-600">
             <div className="h-full flex flex-col justify-center">
               <h2 className="max-w-80 text-left text-balance text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-white mb-4">
-                180+ Countries
+              Redefining Mobile Data Access Worldwide
               </h2>
-              <p className="mt-4 max-w-[26rem] text-left text-base text-white/80 leading-relaxed">
-                Seamless connectivity across the globe. One eSIM, unlimited possibilities.
-              </p>
+              
             </div>
           </WobbleCard>
 
@@ -72,12 +65,9 @@ export function GesimBentoGrid() {
           <div className="max-w-xm">
           <div className="max-w-2xl flex-1">
                 <h2 className="max-w-4xl text-left text-balance text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-white mb-4">
-                  Crypto-Powered Privacy & Automatic Billing
-                </h2>
-                <p className="mt-4 max-w-3xl text-left text-base text-white/80 leading-relaxed">
-                  Pay with crypto or fiat, get billed automatically based on usage. No KYC required, no surprises, no
-                  borders. Complete privacy with cutting-edge eSIM technology.
-                </p>
+
+                Smart. Secure. Seamless. Global mobile data with GeSIM                </h2>
+               
               </div>
 
               {/* ✅ Clean eSIM image touching right edge */}
@@ -99,4 +89,15 @@ export function GesimBentoGrid() {
       </div>
     </section>
   )
+}
+
+export function TrustedBy() {
+  return (
+    <section className="w-full py-10 bg-white/80 backdrop-blur-md flex flex-col items-center">
+      <div className="text-lg font-semibold text-slate-500 mb-4 tracking-wide">Trusted by</div>
+      <div className="flex items-center justify-center gap-8 px-4 py-6 rounded-2xl bg-white/60 shadow-md border border-slate-100/60" style={{ minWidth: 180 }}>
+        <Image src="/airalo.png" alt="Airalo" width={95} height={28} className="object-contain" />
+      </div>
+    </section>
+  );
 }
