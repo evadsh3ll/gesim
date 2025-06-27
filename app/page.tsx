@@ -14,6 +14,8 @@ import { FeaturesCarousel } from "@/components/features-carousel"
 import ImageTrail from "@/components/ImageTrail/ImageTrail"
 import WhoIsGeSIMFor from "@/components/GridMotion/WhoIsGeSIMFor"
 import FAQChat from "@/components/FAQChat"
+// import { TweetCard } from "@/components/magicui/tweet-card"
+import { ClientTweetCard } from "@/components/magicui/client-tweet-card"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -229,9 +231,45 @@ export default function GesimLanding() {
       <FeaturesCarousel />
       {/* Backers Section */}
       {/* <BackersSection /> */}
-<WhoIsGeSIMFor />
-      {/* Footer */}
-    <FAQChat />
+      <WhoIsGeSIMFor />
+
+      {/* Enhanced Tweet Showcase Section */}
+      <section className="w-full py-16 px-4 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              What People Are Saying
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Join the growing community of users who are transforming their digital habits with GeSIM
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* First Tweet */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-lg">
+                <ClientTweetCard 
+                  id="1933835538391327190" 
+                  className="w-full h-auto shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200 bg-white/80 backdrop-blur-sm"
+                />
+              </div>
+            </div>
+            
+            {/* Second Tweet */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-lg">
+                <ClientTweetCard 
+                  id="1933832533135004126" 
+                  className="w-full h-auto shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-200 bg-white/80 backdrop-blur-sm"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <FAQChat />
       <Footer />
     </div>
   )

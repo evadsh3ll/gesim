@@ -5,10 +5,10 @@ import React, {
   useState,
   createContext,
   useContext,
+  useCallback,
+  useMemo,
 } from "react";
 import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
   IconX,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
@@ -37,116 +37,172 @@ export const CarouselContext = createContext<{
 });
 
 export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
-  const carouselRef = React.useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
-  const [canScrollRight, setCanScrollRight] = React.useState(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Cache DOM measurements to avoid recalculating on every scroll
+  const measurements = useRef({
+    cardWidth: 0,
+    gap: 32,
+    totalWidth: 0,
+    maxScroll: 0,
+    containerHeight: 0,
+    viewportHeight: 0,
+    viewportWidth: 0,
+  });
+
+  // Throttle state
+  const lastScrollTime = useRef(0);
+  const animationFrame = useRef<number>();
+
+  // Easing function (moved outside to avoid recreation)
+  const easeInOutCubic = useCallback((t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  }, []);
+
+  // Cache measurements on mount and resize
+  const updateMeasurements = useCallback(() => {
+    if (!carouselRef.current || !containerRef.current) return;
+
+    const carousel = carouselRef.current;
+    const container = containerRef.current;
+    
+    measurements.current = {
+      cardWidth: window.innerWidth < 768 ? 320 : 448,
+      gap: 32,
+      totalWidth: 0,
+      maxScroll: 0,
+      containerHeight: container.clientHeight,
+      viewportHeight: window.innerHeight,
+      viewportWidth: carousel.clientWidth,
+    };
+
+    const totalCards = carousel.children[0]?.children.length || items.length;
+    measurements.current.totalWidth = (measurements.current.cardWidth + measurements.current.gap) * totalCards;
+    measurements.current.maxScroll = Math.max(0, measurements.current.totalWidth - measurements.current.viewportWidth);
+  }, [items.length]);
+
+  // Optimized scroll handler with better throttling
+  const handleScroll = useCallback(() => {
+    const now = performance.now();
+    
+    // Throttle to ~60fps max
+    if (now - lastScrollTime.current < 16) return;
+    lastScrollTime.current = now;
+
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current);
+    }
+
+    animationFrame.current = requestAnimationFrame(() => {
+      if (!carouselRef.current || !containerRef.current) return;
+
+      const container = containerRef.current;
+      const carousel = carouselRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const { viewportHeight, maxScroll } = measurements.current;
+      
+      // Quick viewport check
+      if (containerRect.top > 0 || containerRect.bottom < viewportHeight) return;
+      
+      // Calculate scroll progress more efficiently
+      const scrollProgress = Math.abs(containerRect.top) / (containerRect.height - viewportHeight);
+      const clampedProgress = Math.min(1, Math.max(0, scrollProgress));
+      
+      if (clampedProgress === 0 || clampedProgress === 1) return;
+      
+      const easedProgress = easeInOutCubic(clampedProgress);
+      const targetScroll = easedProgress * maxScroll;
+      
+      // Use transform instead of scrollLeft for better performance
+      const carouselContent = carousel.children[0] as HTMLElement;
+      if (carouselContent) {
+        carouselContent.style.transform = `translateX(-${targetScroll}px)`;
+      }
+    });
+  }, [easeInOutCubic]);
+
+  // Debounced resize handler
+  const handleResize = useCallback(() => {
+    const timeoutId = setTimeout(() => {
+      updateMeasurements();
+    }, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [updateMeasurements]);
 
   useEffect(() => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollLeft = initialScroll;
-      checkScrollability();
-    }
-  }, [initialScroll]);
+    updateMeasurements();
+    
+    // Use passive listeners for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+      }
+    };
+  }, [handleScroll, handleResize]);
 
-  const checkScrollability = () => {
-    if (carouselRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
-    }
-  };
-
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
-    }
-  };
-
-  const handleCardClose = (index: number) => {
-    if (carouselRef.current) {
-      const cardWidth = isMobile() ? 230 : 384; // (md:w-96)
-      const gap = isMobile() ? 4 : 8;
-      const scrollPosition = (cardWidth + gap) * (index + 1);
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-      setCurrentIndex(index);
-    }
-  };
-
-  const isMobile = () => {
-    return window && window.innerWidth < 768;
-  };
+  const handleCardClose = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
 
   return (
     <CarouselContext.Provider
       value={{ onCardClose: handleCardClose, currentIndex }}
     >
-      <div className="relative w-full">
-        <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none] md:py-20"
-          ref={carouselRef}
-          onScroll={checkScrollability}
-        >
+      <div 
+        ref={containerRef}
+        className="relative w-full"
+        style={{ height: '400vh' }}
+      >
+        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
           <div
-            className={cn(
-              "absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l",
-            )}
-          ></div>
-
-          <div
-            className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
-              "mx-auto max-w-7xl", // remove max-w-4xl if you want the carousel to span the full width of its container
-            )}
+            className="flex w-full py-10 md:py-20"
+            ref={carouselRef}
+            style={{ 
+              overflow: 'hidden', // Changed from overflow-x-scroll
+            }}
           >
-            {items.map((item, index) => (
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.5,
-                    delay: 0.2 * index,
-                    ease: "easeOut",
-                    once: true,
-                  },
-                }}
-                key={"card" + index}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
-              >
-                {item}
-              </motion.div>
-            ))}
+            <div
+              className={cn(
+                "flex flex-row justify-start gap-8 pl-8",
+                "mx-auto max-w-none transition-transform duration-0", // Added transition control
+              )}
+              style={{ 
+                width: 'max-content',
+                willChange: 'transform', // Optimize for transforms
+              }}
+            >
+              {items.map((item, index) => (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.5,
+                      delay: 0.1 * index, // Reduced delay for faster loading
+                      ease: "easeOut",
+                      once: true,
+                    },
+                  }}
+                  key={"card" + index}
+                  className="rounded-3xl flex-shrink-0"
+                >
+                  {item}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="mr-10 flex justify-end gap-2">
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
-            onClick={scrollLeft}
-            disabled={!canScrollLeft}
-          >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
-          </button>
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
-            onClick={scrollRight}
-            disabled={!canScrollRight}
-          >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
-          </button>
         </div>
       </div>
     </CarouselContext.Provider>
@@ -185,14 +241,14 @@ export const Card = ({
 
   useOutsideClick(containerRef, () => handleClose());
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
     onCardClose(index);
-  };
+  }, [index, onCardClose]);
 
   return (
     <>
@@ -239,19 +295,19 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[40rem] md:w-96 dark:bg-neutral-900"
+        className="relative z-10 flex h-[30rem] w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[45rem] md:w-[28rem] dark:bg-neutral-900 flex-shrink-0"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/50 via-transparent to-transparent" />
-        <div className="relative z-40 p-8">
+        <div className="relative z-40 p-10 md:p-12">
           <motion.p
             layoutId={layout ? `category-${card.category}` : undefined}
-            className="text-left font-sans text-sm font-medium text-white md:text-base"
+            className="text-left font-sans text-base font-medium text-white md:text-lg"
           >
             {card.category}
           </motion.p>
           <motion.p
             layoutId={layout ? `title-${card.title}` : undefined}
-            className="mt-2 max-w-xs text-left font-sans text-xl font-semibold [text-wrap:balance] text-white md:text-3xl"
+            className="mt-3 max-w-sm text-left font-sans text-2xl font-semibold [text-wrap:balance] text-white md:text-4xl"
           >
             {card.title}
           </motion.p>
@@ -276,6 +332,11 @@ export const BlurImage = ({
   ...rest
 }: ImageProps) => {
   const [isLoading, setLoading] = useState(true);
+  
+  const handleLoad = useCallback(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <img
       className={cn(
@@ -283,7 +344,7 @@ export const BlurImage = ({
         isLoading ? "blur-sm" : "blur-0",
         className,
       )}
-      onLoad={() => setLoading(false)}
+      onLoad={handleLoad}
       src={src as string}
       width={width}
       height={height}
