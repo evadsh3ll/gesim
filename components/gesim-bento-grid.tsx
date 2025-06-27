@@ -5,7 +5,11 @@ import { WobbleCard } from "@/components/ui/wobble-card"
 export function GesimBentoGrid() {
   return (
     <section className="py-20 bg-black">
+
       <div className="container mx-auto px-8">
+      <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-5xl font-bold text-white font-sans mb-8">
+        Why GeSIM.
+      </h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
 
           {/* Main Feature Card */}
