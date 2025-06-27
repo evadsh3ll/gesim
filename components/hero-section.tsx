@@ -555,9 +555,9 @@ export default function HeroSection() {
         <div className="flex flex-col lg:flex-row gap-16 items-center min-h-[80vh]">
           {/* Left content - reduced spacing */}
           <div ref={textRef} className="flex-1 space-y-6 lg:pr-12">
-            <Badge className="inline-flex bg-blue-100 text-blue-700 hover:bg-blue-100 px-4 py-2 text-sm font-semibold">
-              ✨ eSIM, Reinvented
-            </Badge>
+            {/* <Badge className="inline-flex bg-blue-100 text-blue-700 hover:bg-blue-100 px-4 py-2 text-sm font-semibold">
+               eSIM, Reinvented
+            </Badge> */}
             <h1 className="text-6xl lg:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tight">
               Connect globally, pay{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600">
