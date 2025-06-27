@@ -13,32 +13,36 @@ import { AnimatedTooltip } from "./ui/animated-tooltip";
 import {InteractiveHoverButton} from "./magicui/interactive-hover-button";
 import dynamic from "next/dynamic"
 import { FloatingCard } from "./ui/floating-card";
+import { AuroraText } from "./magicui/aurora-text"
+import Stepper, { Step } from "./Stepper/Stepper";
+import { useState } from "react";
 const World = dynamic(() => import("./ui/globe").then((m) => m.World), {
   ssr: false,
 });
  
-  const globeConfig = {
-    pointSize: 4,
-    globeColor: "#181E4B",
-    showAtmosphere: true,
-    atmosphereColor: "#6366f1",
-    atmosphereAltitude: 0.18,
-    emissive: "#1e293b",
-    emissiveIntensity: 0.18,
-    shininess: 1.2,
-    polygonColor: "rgba(255,255,255,0.85)",
-    ambientLight: "#60a5fa",
-    directionalLeftLight: "#a5b4fc",
-    directionalTopLight: "#c7d2fe",
-    pointLight: "#ffffff",
-    arcTime: 1000,
-    arcLength: 0.9,
-    rings: 1,
-    maxRings: 3,
-    initialPosition: { lat: 22.3193, lng: 114.1694 },
-    autoRotate: true,
-    autoRotateSpeed: 0.5,
-  };
+const globeConfig = {
+  pointSize: 4,
+  globeColor: "#0b59f6",                // core globe color (deep blue)
+  showAtmosphere: true,
+  atmosphereColor: "#43c0ff",           // glow around globe (neon blue)
+  atmosphereAltitude: 0.18,
+  emissive: "#1e3a8a",                  // deeper navy blue
+  emissiveIntensity: 0.2,
+  shininess: 1.4,
+  polygonColor: "rgba(255,255,255,0.85)",
+  ambientLight: "#60a5fa",              // soft sky blue
+  directionalLeftLight: "#93c5fd",      // light blue
+  directionalTopLight: "#bfdbfe",       // pale blue
+  pointLight: "#ffffff",                // white
+  arcTime: 1000,
+  arcLength: 0.9,
+  rings: 1,
+  maxRings: 3,
+  initialPosition: { lat: 22.3193, lng: 114.1694 },
+  autoRotate: true,
+  autoRotateSpeed: 0.5,
+};
+
   const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
   const sampleArcs = [
     {
@@ -451,6 +455,7 @@ export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null)
   const phoneRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
+  const [showStepper, setShowStepper] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -555,71 +560,103 @@ export default function HeroSection() {
         <div className="flex flex-col lg:flex-row gap-16 items-center min-h-[80vh]">
           {/* Left content - reduced spacing */}
           <div ref={textRef} className="flex-1 space-y-6 lg:pr-12">
-            {/* <Badge className="inline-flex bg-blue-100 text-blue-700 hover:bg-blue-100 px-4 py-2 text-sm font-semibold">
-               eSIM, Reinvented
-            </Badge> */}
-            <h1 className="text-6xl lg:text-7xl font-bold text-slate-900 leading-[0.9] tracking-tight">
-              Connect globally, pay{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600">
-                locally
-              </span>
+           
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-black font-sans md:font-display text-left drop-shadow-xl leading-tight">
+              One <AuroraText>eSIM</AuroraText><br />for the world
             </h1>
-            {/* User avatars section */}
-            <div className="flex items-center gap-6 pt-6">
-              <div className="flex flex-row items-center justify-center">
-                <AnimatedTooltip items={people} />
-              </div>
-              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-lg border border-white/20">
-                <div className="flex items-baseline gap-1">
-                  <CountUp 
-                    from={0}
-                    to={60}
-                    separator="," 
-                    direction="up"
-                    duration={2}
-                    className="text-3xl font-bold text-slate-900"
-                  />
-                  <span className="text-2xl font-bold text-blue-600">+</span>
-                </div>
-                <div className="text-slate-600 font-medium text-sm">
-                  people registered
-                </div>
-              </div>
-            </div>
-            <Magnet padding={250} disabled={false} magnetStrength={10}>
-              <InteractiveHoverButton>
-                Join the waitlist now
-              </InteractiveHoverButton>
-            </Magnet>
+            <span className="block mt-2 text-lg md:text-2xl font-semibold bg-gradient-to-r from-blue-400 via-blue-600 to-emerald-400 bg-clip-text text-transparent text-left drop-shadow-md">
+              Connect globally, pay locally
+            </span>
+            {/* Stepper/Button logic */}
+            {showStepper ? (
+              <Stepper
+                initialStep={1}
+                onStepChange={(step) => {
+                  console.log(step);
+                }}
+                onFinalStepCompleted={() => console.log("All steps completed!")}
+                backButtonText="Previous"
+                nextButtonText="Next"
+              >
+                <Step>
+                  <h2>Welcome to GeSIM!</h2>
+                  <p>Get started with your global eSIM journey.</p>
+                </Step>
+                <Step>
+                  <h2>Choose your plan</h2>
+                  <p>Select a data plan that fits your travel needs.</p>
+                </Step>
+                <Step>
+                  <h2>Activate instantly</h2>
+                  <p>Scan the QR code and connect worldwide.</p>
+                </Step>
+                <Step>
+                  <h2>You're all set!</h2>
+                  <p>Enjoy seamless connectivity in 180+ countries.</p>
+                </Step>
+              </Stepper>
+            ) : (
+              <Magnet padding={250} disabled={false} magnetStrength={10}>
+                <InteractiveHoverButton onClick={() => setShowStepper(true)}>
+                  Join the waitlist now
+                </InteractiveHoverButton>
+              </Magnet>
+            )}
           </div>
           {/* Right content - GlobeDemo */}
-          <div className="flex-1 flex justify-center items-center w-full min-h-[500px] lg:min-h-[800px]">
-            <div className="relative w-[420px] h-[420px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px]">
-              {/* Floating Cards */}
-              <FloatingCard
-                title="Instant Global eSIM"
-                description="Activate your eSIM in seconds, anywhere."
-                style={{ top: '10%', left: '62%', width: '210px', zIndex: 10, transform: 'rotate(-6deg)' }}
-                animationDelay={0.2}
-                transitionConfig={{ duration: 1.2, type: 'spring', stiffness: 60, damping: 18 }}
-              />
-              <FloatingCard
-                title="Web3 Wallet"
-                description="Secure, private, and borderless payments."
-                style={{ top: '6%', left: '2%', width: '200px', zIndex: 10, transform: 'rotate(8deg)' }}
-                animationDelay={0.4}
-                transitionConfig={{ duration: 1.2, type: 'spring', stiffness: 60, damping: 18 }}
-              />
-              <FloatingCard
-                title="Data Plans for Travelers"
-                description="Affordable, local rates in 180+ countries."
-                style={{ top: '68%', right: '2%', width: '220px', zIndex: 10, transform: 'rotate(-4deg)' }}
-                animationDelay={0.6}
-                transitionConfig={{ duration: 1.2, type: 'spring', stiffness: 60, damping: 18 }}
-              />
-              <World data={sampleArcs} globeConfig={globeConfig} />
-            </div>
-          </div>
+          <div className="flex-1 flex justify-center items-center w-full min-h-[500px] lg:min-h-[800px] relative">
+  <div className="relative w-[420px] h-[420px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px]">
+    
+    {/* Card: Top Right */}
+    <FloatingCard
+  label="Web3 ID"
+  main="Canada"
+  style={{
+    position: "absolute",
+    top: "45%", // adjust this to shift vertically
+    left: "60%", // tweak left/right
+    zIndex: 30,
+    transform: "rotate(-6deg) translate(-50%, -50%)", // center-ish and rotated
+    width: "200px",
+  }}
+  animationDelay={0.3}
+/>
+
+    {/* Card: Top Left */}
+    <FloatingCard
+      label="Web3 Wallet"
+      main="13.25 GB"
+      sub="$7.33 USD"
+      style={{
+        top: '25%',
+        left: '30%',
+        transform: 'rotate(6deg) translate(-50%, -50%)',
+        zIndex: 20,
+        width: '200px',
+      }}
+      animationDelay={0.4}
+    />
+
+    {/* Card: Bottom Right */}
+    <FloatingCard
+      label="Region"
+      main="APAC"
+      style={{
+        top: '65%',
+        left: '30%',
+        transform: 'rotate(-4deg) translate(-50%, -50%)',
+        zIndex: 20,
+        width: '200px',
+      }}
+      animationDelay={0.6}
+    />
+
+    {/* Globe Component */}
+    <World data={sampleArcs} globeConfig={globeConfig} />
+  </div>
+</div>
+
+
         </div>
       </div>
     </section>
