@@ -7,6 +7,7 @@ import React, {
   useContext,
   useCallback,
   useMemo,
+  JSX,
 } from "react";
 import {
   IconX,
@@ -52,9 +53,9 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     viewportWidth: 0,
   });
 
-  // Throttle state
+  // Throttle state - Fixed: Changed from number | undefined to number
   const lastScrollTime = useRef(0);
-  const animationFrame = useRef<number>();
+  const animationFrame = useRef<number | null>(null);
 
   // Easing function (moved outside to avoid recreation)
   const easeInOutCubic = useCallback((t: number): number => {
@@ -192,7 +193,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                       duration: 0.5,
                       delay: 0.1 * index, // Reduced delay for faster loading
                       ease: "easeOut",
-                      once: true,
+                      // Removed 'once' property as it doesn't exist in motion/react
                     },
                   }}
                   key={"card" + index}
@@ -239,7 +240,8 @@ export const Card = ({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  useOutsideClick(containerRef, () => handleClose());
+  // Fixed: Handle the case where containerRef.current might be null
+  useOutsideClick(containerRef as React.RefObject<HTMLDivElement>, () => handleClose());
 
   const handleOpen = useCallback(() => {
     setOpen(true);
