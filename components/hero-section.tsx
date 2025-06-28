@@ -658,6 +658,12 @@ export default function HeroSection() {
 
 
         </div>
+      <section className="w-full py-10 bg-white/80 backdrop-blur-md flex flex-col items-center">
+      <div className="text-lg font-semibold text-slate-500 mb-4 tracking-wide">Trusted by</div>
+      <div className="flex items-center justify-center gap-8 px-4 py-6 rounded-2xl bg-white/60 shadow-md border border-slate-100/60" style={{ minWidth: 180 }}>
+        <Image src="/airalo.png" alt="Airalo" width={95} height={28} className="object-contain" />
+      </div>
+    </section>
       </div>
     </section>
   )
@@ -736,6 +742,12 @@ function PhoneMockupHero() {
             </div>
           </div>
         </div>
+        {/* <section className="w-full py-10 bg-white/80 backdrop-blur-md flex flex-col items-center">
+      <div className="text-lg font-semibold text-slate-500 mb-4 tracking-wide">Trusted by</div>
+      <div className="flex items-center justify-center gap-8 px-4 py-6 rounded-2xl bg-white/60 shadow-md border border-slate-100/60" style={{ minWidth: 180 }}>
+        <Image src="/airalo.png" alt="Airalo" width={95} height={28} className="object-contain" />
+      </div>
+    </section> */}
       </div>
     </div>
   )

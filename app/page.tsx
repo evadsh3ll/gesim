@@ -221,7 +221,7 @@ export default function GesimLanding() {
       <HeroSection />
 
       {/* Trusted By Section */}
-      <TrustedBy />
+      {/* <TrustedBy /> */}
 
       {/* Bento Grid Section - Replaces ScrollReveal */}
       <GesimBentoGrid />
