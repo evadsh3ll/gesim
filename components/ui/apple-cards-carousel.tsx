@@ -297,9 +297,9 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-[30rem] w-80 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[45rem] md:w-[28rem] dark:bg-neutral-900 flex-shrink-0"
+        className="relative z-10 flex h-[30rem] w-80 flex-col items-start justify-end overflow-hidden rounded-3xl bg-gray-100 md:h-[45rem] md:w-[28rem] dark:bg-neutral-900 flex-shrink-0"
       >
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-full bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="relative z-40 p-10 md:p-12">
           <motion.p
             layoutId={layout ? `category-${card.category}` : undefined}

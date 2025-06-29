@@ -604,59 +604,55 @@ export default function HeroSection() {
             )}
           </div>
           {/* Right content - GlobeDemo */}
-          <div className="flex-1 flex justify-center items-center w-full min-h-[500px] lg:min-h-[800px] relative">
-  <div className="relative w-[420px] h-[420px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px]">
-    
-    {/* Card: Top Right */}
-    <FloatingCard
-  label="Web3 ID"
-  main="Canada"
-  style={{
-    position: "absolute",
-    top: "45%", // adjust this to shift vertically
-    left: "60%", // tweak left/right
-    zIndex: 30,
-    transform: "rotate(-6deg) translate(-50%, -50%)", // center-ish and rotated
-    width: "200px",
-  }}
-  animationDelay={0.3}
-/>
-
-    {/* Card: Top Left */}
-    <FloatingCard
-      label="Web3 Wallet"
-      main="13.25 GB"
-      sub="$7.33 USD"
-      style={{
-        top: '25%',
-        left: '30%',
-        transform: 'rotate(6deg) translate(-50%, -50%)',
-        zIndex: 20,
-        width: '200px',
-      }}
-      animationDelay={0.4}
-    />
-
-    {/* Card: Bottom Right */}
-    <FloatingCard
-      label="Region"
-      main="APAC"
-      style={{
-        top: '65%',
-        left: '30%',
-        transform: 'rotate(-4deg) translate(-50%, -50%)',
-        zIndex: 20,
-        width: '200px',
-      }}
-      animationDelay={0.6}
-    />
-
-    {/* Globe Component */}
-    <World data={sampleArcs} globeConfig={globeConfig} />
-  </div>
-</div>
-
-
+          <div className="w-[340px] md:w-[500px] lg:w-[700px] flex justify-center items-center min-h-[350px] md:min-h-[500px] lg:min-h-[800px] relative">
+            <div className="relative w-full aspect-square max-w-[340px] md:max-w-[500px] lg:max-w-[700px] mx-auto">
+              {/* Card: Top Right */}
+              <FloatingCard
+                label="Web3 ID"
+                main="Canada"
+                style={{
+                  position: "absolute",
+                  top: "40%",
+                  left: "70%",
+                  zIndex: 30,
+                  transform: "rotate(-6deg) translate(-50%, -50%)",
+                  width: "160px",
+                }}
+                animationDelay={0.3}
+              />
+              {/* Card: Top Left */}
+              <FloatingCard
+                label="Web3 Wallet"
+                main="13.25 GB"
+                sub="$7.33 USD"
+                style={{
+                  position: "absolute",
+                  top: '18%',
+                  left: '28%',
+                  transform: 'rotate(6deg) translate(-50%, -50%)',
+                  zIndex: 20,
+                  width: '160px',
+                }}
+                animationDelay={0.4}
+              />
+              {/* Card: Bottom Right */}
+              <FloatingCard
+                label="Region"
+                main="APAC"
+                style={{
+                  position: "absolute",
+                  top: '75%',
+                  left: '35%',
+                  transform: 'rotate(-4deg) translate(-50%, -50%)',
+                  zIndex: 20,
+                  width: '160px',
+                }}
+                animationDelay={0.6}
+              />
+              {/* Globe Component */}
+              <World data={sampleArcs} globeConfig={globeConfig} />
+            </div>
+          </div>
         </div>
       <section className="w-full py-10 bg-white/80 backdrop-blur-md flex flex-col items-center">
       <div className="text-lg font-semibold text-slate-500 mb-4 tracking-wide">Trusted by</div>

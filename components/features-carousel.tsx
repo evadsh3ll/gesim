@@ -7,26 +7,26 @@ import Image from "next/image";
 export function FeaturesCarousel() {
   const data = [
     {
-      category: "Pay-As-You-Use",
-      title: "Usage-based billing using smart contracts and oracle integration.",
+      category: "Global Pay-Per-Use Connectivity",
+      title: "Smart billing, no changing eSIM, 180+ countries",
       src: "/screen1.png",
       content: <DummyContent />,
     },
     {
-      category: "Secure & Encrypted",
-      title: "Private login via ZK identity with encrypted, user-owned data.",
+      category: "Operator switch logic",
+      title: "Seamless Effortless Travel Connectivity.",
       src: "/screen2.png",
       content: <DummyContent />,
     },
     {
-      category: "Global Access",
-      title: "Connect in 180+ countries—no SIM cards, no roaming fees",
+      category: "eSIM SBT Mint",
+      title: "On-Chain Identity for Travel Perks",
       src: "/screen3.png",
       content: <DummyContent />,
     },
     {
-      category: "Instant Onboarding",
-      title: "Instant eSIM access via wallet—no apps, no delays",
+      category: "Buy regional data",
+      title: "Top up with USDC or fiat instantly via on-ramps.",
       src: "/screen4.png",
       content: <DummyContent />,
     },
